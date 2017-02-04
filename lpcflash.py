@@ -179,48 +179,50 @@ def readRam(com, address, size):
 	return data
 
 def printReturnCode(code):
+def printReturnCode(code, prefix='', posfix=''):
 	if code == 0 :
-		print 'CMD_SUCCESS'
+		print prefix, 'CMD_SUCCESS'
 	elif code == 1 :
-		print 'INVALID_COMMAND'
+		print prefix, 'INVALID_COMMAND', posfix
 	elif code == 2 :
-		print 'SRC_ADDR_ERROR'
+		print prefix, 'SRC_ADDR_ERROR', posfix
 	elif code == 3 :
-		print 'DST_ADDR_ERROR'
+		print prefix, 'DST_ADDR_ERROR', posfix
 	elif code == 4 :
-		print 'SRC_ADDR_NOT_MAPPED'	
+		print prefix, 'SRC_ADDR_NOT_MAPPED', posfix
 	elif code == 5 :
-		print 'DST_ADDR_NOT_MAPPED'
+		print prefix, 'DST_ADDR_NOT_MAPPED', posfix
 	elif code == 6 :
-		print 'COUNT_ERROR'
+		print prefix, 'COUNT_ERROR', posfix
 	elif code == 7 :
-		print 'INVALID_SECTOR'
+		print prefix, 'INVALID_SECTOR', posfix
 	elif code == 8 :
-		print 'SECTOR_NOT_BLANK'	
+		print prefix, 'SECTOR_NOT_BLANK', posfix
 	elif code == 9 :
-		print 'SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION'
+		print prefix, 'SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION', posfix
 	elif code == 10 :
-		print 'COMPARE_ERROR'
+		print prefix, 'COMPARE_ERROR', posfix
 	elif code == 11 :
-		print 'BUSY'
+		print prefix, 'BUSY', posfix
 	elif code == 12 :
-		print 'PARAM_ERROR'	
+		print prefix, 'PARAM_ERROR', posfix
 	elif code == 13 :
-		print 'ADDR_ERROR'
+		print prefix, 'ADDR_ERROR', posfix
 	elif code == 14 :
-		print 'ADDR_NOT_MAPPED'
+		print prefix, 'ADDR_NOT_MAPPED', posfix
 	elif code == 15 :
-		print 'CMD_LOCKED'
+		print prefix, 'CMD_LOCKED', posfix
 	elif code == 16 :
-		print 'CMD_SUCCESS'	
+		print prefix, 'CMD_SUCCESS', posfix
 	elif code == 17 :
-		print 'INVALID_CODE'
+		print prefix, 'INVALID_CODE', posfix
 	elif code == 18 :
-		print 'INVALID_STOP_BIT'					
+		print prefix, 'INVALID_STOP_BIT', posfix				
 	elif code == 19 :
-		print 'CODE_READ_PROTECTION_ENABLED'	
+		print prefix, 'CODE_READ_PROTECTION_ENABLED', posfix
 	elif code == 20 :
-		print 'RESEND'
+		print prefix, 'RESEND', posfix
+	return code
 		
 if __name__ == "__main__":
 	PARTID = 0x26013f37
