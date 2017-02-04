@@ -178,7 +178,6 @@ def readRam(com, address, size):
 		data += cdata
 	return data
 
-def printReturnCode(code):
 def getSectorNumber(Address) :
 	if Address < 0x00010000 :		
 		return Address / 4096
@@ -271,6 +270,12 @@ def printReturnCode(code, prefix='', posfix=''):
 		print prefix, 'CODE_READ_PROTECTION_ENABLED', posfix
 	elif code == 20 :
 		print prefix, 'RESEND', posfix
+	return code
+def exitOnError(com, code, prefix='') :
+	if code :
+		printReturnCode(code, prefix)
+		com.close()
+		sys.exit(1)
 	return code
 		
 if __name__ == "__main__":
