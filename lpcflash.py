@@ -179,6 +179,17 @@ def readRam(com, address, size):
 	return data
 
 def printReturnCode(code):
+def getSectorNumber(Address) :
+	if Address < 0x00010000 :		
+		return Address / 4096
+	else :		
+		return 16 + (((Address / 65536)-1)*2) + ((Address / 32768) & 1)
+	
+def getSectorSize(Address) :
+	if Address < 0x00010000 :
+		return 4096	
+	else :
+		return 32768
 def printReturnCode(code, prefix='', posfix=''):
 	if code == 0 :
 		print prefix, 'CMD_SUCCESS'
