@@ -127,24 +127,7 @@ def sendDataBlock(com, address, data): #max data size 20*45 bytes
 	if code == "RESEND\r\n":
 		return 20
 	elif code == "OK\r\n":
-		return 0	
-		
-def writeBlock(self, addr, data):
-	data_len = len(data)
-	self.com.write("W %d %d\n" % ( addr, data_len ))
-	for i in range(0, data_len, UUlineSize):
-		c_line_size = data_len - i
-		if c_line_size > UUlineSize:
-			c_line_size = UUlineSize
-		block = data[i: i + c_line_size]
-		bstr = uuencoding.uu_encode(block)
-		self.com.write(bstr)   #write line 61 chars max (45byte)
-
-	self.com.write("%s\n" % uu.sum(data))
-	status = com.readline()
-	if status != "OK\r\n" :
-		panic(status)
-	return data_len
+		return 0
 
 def writeRam(com, address, data):
 	n = 0
