@@ -148,12 +148,13 @@ def writeBlock(self, addr, data):
 
 def writeRam(com, address, data):
 	n = 0
-	retries = 5
+	retries = 2
 	data_len = len(data)
 	while data_len > 0:	
 		bytes = data_len if data_len < uu.blockSize else uu.blockSize
 		code = sendDataBlock(com, address, data[n: n + bytes])
-		if code == 20 : #resend
+		if code == 20 : #resend code
+			stdout.write('!')
 			retries -= 1
 			if retries == 0:
 				return 20			
