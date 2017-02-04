@@ -271,6 +271,7 @@ def printReturnCode(code, prefix='', posfix=''):
 	elif code == 20 :
 		print prefix, 'RESEND', posfix
 	return code
+
 def exitOnError(com, code, prefix='') :
 	if code :
 		printReturnCode(code, prefix)
@@ -325,7 +326,7 @@ if __name__ == "__main__":
 				print ex
 				sys.exit(1)
 	try:
-		com = serial.Serial(serialport, 19200, timeout = 1)
+		com = serial.Serial(serialport, 115200, timeout = 1)
 	except serial.SerialException:
 		print 'Could not open ', serialport
 		sys.exit(2)
@@ -338,10 +339,23 @@ if __name__ == "__main__":
 			while byte != "":
 				data.append(ord(byte))
 				byte = f.read(1)		
+
 		print "Connecting to device.."
-		connectDevice(com)
-		print "Writing %d bytes to address 0x%X" % (len(data), DLADDRESS)
-		printReturnCode(writeRam(com, DLADDRESS,data))
+		connectDevice(com)		
+	
+		data_len = len(data)
+		if DLADDRESS == RAM_ADDR :
+			if data_len > RAM_SIZE :
+				print "Cannot load %u bytes in to ram %u bytes" % (data_len, RAM_SIZE) 
+				com.close()
+				sys.exit(1)
+			print "Loading %d bytes to ram address 0x%X" % (data_len, RAM_ADDR)
+			exitOnError(com, writeRam(com, RAM_ADDR,data), "Write Ram")
+			print "done!"
+			print "Running code on ram"
+		else :
+			writeFlash(com, DLADDRESS, data)
+			print "done!\n Running code on flash"
 		unlock(com)
 		go(com, DLADDRESS)
 	except IOError as e :
