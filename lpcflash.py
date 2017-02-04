@@ -280,10 +280,23 @@ def exitOnError(com, code, prefix='') :
 		
 if __name__ == "__main__":
 	PARTID = 0x26013f37
+	RAM_ADDR = 0x10000200
+	RAM_SIZE = (0x8000 - 0x200)
+	FLASH_SECTOR_SIZE = 0x1000
 	APPNAME = 'Pyflash.py'
 	APPHELP = " -p serial_port (-h hexfile | -b binfile)\n [-a loadaddress]\n"
-	DLADDRESS = 0x10000200
+	DLADDRESS = RAM_ADDR	
 	devid = 0
+	
+#	addr = 0
+#	for i in range(0, 29):
+#		addr += 0x1000 if i < 16 else 0x8000
+#		size = getSectorSize(addr)
+#		num = getSectorNumber(addr)
+#		print "0x%x :%u %u" %(addr, size, num)	
+#	sys.exit(1)
+	
+	
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], "p:h:b:a:",["port=","hexfile="])
 	except getopt.GetoptError:
