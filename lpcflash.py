@@ -190,6 +190,44 @@ def getSectorSize(Address) :
 		return 4096	
 	else :
 		return 32768
+	
+def writeFlash(com, Address, data) :
+	RAM_ADDR = 0x10000000
+	#RAM_ADDR = 0x2007C000
+	startSector = getSectorNumber(Address)
+	endSector = getSectorNumber(Address + len(data))
+	if blankCheck(com,startSector,endSector) != 0 :
+		print "Erasing Sector %u to %u" % (startSector, endSector)				
+		exitOnError(com, prepareSectors(com, startSector, endSector),"Prepare Sectors")
+		exitOnError(com, unlock(com),"unlock")
+		exitOnError(com, eraseSectors(com, startSector, endSector),"Erase Sectors")
+	n = 0
+	flsAddress = Address
+	data_len = len(data)
+	while data_len > 0:
+		startSector = getSectorNumber(flsAddress)
+		sectorSize = 4096 #getSectorSize(flsAddress)		
+		bytes = data_len if data_len < sectorSize else sectorSize
+		exitOnError(com, unlock(com),"unlock")
+		exitOnError(com, writeRam(com, RAM_ADDR, data[n: n + bytes]),"Ram Write")				
+		print "Writing on sector %u" % (startSector)				
+		if bytes > 256 :
+			if bytes > 512:					
+				if bytes > 1024 :
+					count = 4096
+				else :
+					count = 1024
+			else :
+				count = 512
+		else :
+			count = 256
+		#print "Address %X" % (flsAddress)
+		exitOnError(com, prepareSectors(com, startSector, startSector),"Prepare Sectors")
+		exitOnError(com, copyRamToFlash(com,flsAddress, RAM_ADDR, count),"Copy To Flash")
+		n = n + bytes
+		data_len = data_len - bytes
+		flsAddress = flsAddress + bytes		
+
 def printReturnCode(code, prefix='', posfix=''):
 	if code == 0 :
 		print prefix, 'CMD_SUCCESS'
